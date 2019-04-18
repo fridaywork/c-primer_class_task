@@ -49,6 +49,6 @@ int main()
 	allToLower(ss2);
 	cout << "转换后的ss2 ：" << ss2 << endl;
 
-
+	//一个是引用型，一个是非引用型参数
 	while (1);
 }
