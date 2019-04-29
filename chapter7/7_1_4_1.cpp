@@ -1,6 +1,7 @@
 /**********
-7_1_3  节练习
-练习7.9  添加读取和打印Person对象的操作
+7_1_4  节练习
+练习7.15  给Person添加正确的构造函数
+
 
 *****/
 
@@ -14,6 +15,10 @@ using namespace std;
 
 
 struct  Person{
+
+	Person() = default;
+
+	Person(istream&); //这只是个类内的函数声明，不能添加函数主体
 	string is_name() const { return name; };
 	string is_addr() const { return addr; };
 	string name;	//姓名
@@ -36,19 +41,29 @@ ostream &print(ostream &os, const Person &item)
 
 
 
+Person::Person(istream &is)
+{
+	read(is, *this);
+}
+
 
 int main(void)
 {
 	ifstream  input("E:/in/input.txt");
 	if (!input)cout << "文件打开失败！请重试！" << endl;
 	vector<Person>  name_list;
-	Person new_one;
+	Person new_one(input);
 	string tempstr;
-	while (read(input,new_one))
+	if (input)
 	{
-		name_list.push_back(new_one);
-	}
 
+		name_list.push_back(new_one);
+		while (read(input, new_one))
+		{
+			name_list.push_back(new_one);
+		}
+
+	}
 	for (auto c : name_list)
 	{
 		print(cout, c);

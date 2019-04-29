@@ -1,6 +1,6 @@
 /**********
-7_1_3  节练习
-练习7.9  添加读取和打印Person对象的操作
+7_2_1  节练习
+练习7.22  修改Person函数实现隐藏细节
 
 *****/
 
@@ -13,9 +13,16 @@
 using namespace std;
 
 
-struct  Person{
+class  Person{
+	friend istream &read(istream &, Person &);   //为友元函数提供访问private的声明
+public:
+	Person() = default;
+
+	Person(istream&); //这只是个类内的函数声明，不能添加函数主体
 	string is_name() const { return name; };
 	string is_addr() const { return addr; };
+
+private:
 	string name;	//姓名
 	string addr;   //住址
 };
@@ -36,19 +43,29 @@ ostream &print(ostream &os, const Person &item)
 
 
 
+Person::Person(istream &is)
+{
+	read(is, *this);
+}
+
 
 int main(void)
 {
 	ifstream  input("E:/in/input.txt");
 	if (!input)cout << "文件打开失败！请重试！" << endl;
 	vector<Person>  name_list;
-	Person new_one;
+	Person new_one(input);
 	string tempstr;
-	while (read(input,new_one))
+	if (input)
 	{
-		name_list.push_back(new_one);
-	}
 
+		name_list.push_back(new_one);
+		while (read(input, new_one))
+		{
+			name_list.push_back(new_one);
+		}
+
+	}
 	for (auto c : name_list)
 	{
 		print(cout, c);
